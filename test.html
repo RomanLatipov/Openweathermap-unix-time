@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    </head>
+    <body>
+    	<script type="text/javascript">
+    		async function test() {
+    			const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=beijing&APPID=b206d80c92d9a53cdc890c68d85f783e`;
+    			const reponse = await fetch(apiUrl);
+    			const data = await reponse.json();
+    			console.log(data);
+
+    			const unixTimestamp = data.dt + data.timezone;
+
+			    // Convert to milliseconds and
+			    // then create a new Date object
+			    let dateObj = new Date(unixTimestamp * 1000);
+			    let utcString = dateObj.toUTCString();
+			 	let time = utcString.slice(-12, -7);
+			 	const hour = time.slice(0,2);
+			 	console.log(utcString);
+			    console.log(timeConverter(time));
+			    console.log(hour);
+    		}
+    		function timeConverter(time) {
+        		let hour = time.slice(0, 2);
+        		const minutes = time.slice(3,5);
+        		const amOrPm = (hour >= 12) ? " pm" : " am";
+        		hour = (hour > 12) ? hour-12 : ((hour === "00") ? `12` : hour);
+
+        		return hour + ":" + minutes + amOrPm;
+    		}
+    		test();
+    	</script>
+    </body>
+</html>
